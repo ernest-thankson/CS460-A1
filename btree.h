@@ -18,6 +18,14 @@
 #include "query.h"
 
 
+//branching factor
+#define FANOUT 100
+//number of keys per node
+#define NODE_SIZE 50
+//number of pointers per node
+#define PTR_ARR_SIZE 51
+
+
 /* 
 Designing your C Structs for B+Tree nodes (Chapter 10.3.1)
 How will you represent a B+Tree as a C Struct (or series of C structs that work together)? There are many valid ways to do this part of your design, and we leave it open to you to try and tune this as you progress through the project.
@@ -30,23 +38,99 @@ What is the minimum threshold of content for a node, before it has to be part of
 // TODO: here you will need to define a B+Tree node(s) struct(s)
 
 
+//declaring node struct for nodes
+struct Node{
+    int keys[NODE_SIZE];
+    int keyPos; //rightmost empty position in keys
+    int values[NODE_SIZE];
+    struct Node * ptrs[PTR_ARR_SIZE];
+    int ptrPos; //rightmost empty position in ptrs
+    struct Node * prevPtr; //pointer to node to the left of this node on the same level
+    struct Node * nextPtr;  //pointer to node to the right of this node on the same level
+    struct Node * upperPtr; //pointer to parent node
+    int isALeafNode;
+};
+
+
+/* 
+    Declaring the root of the tree
+ */
+
+struct Node root;
+
+
 /* The following are methods that can be invoked on B+Tree node(s).
  * Hint: You may want to review different design patterns for passing structs into C functions.
  */
 
-/* FIND (Chapter 10.4)
+void initializeUpperNode(struct Node node){
+	int i;
+    for (i = 0; i < NODE_SIZE; ++i)
+    {
+        node.keys[i] = 0;
+    }
+    for (i = 0; i < NODE_SIZE; ++i)
+    {
+        node.values[i] = 0;
+    }
+    for (i = 0; i < PTR_ARR_SIZE; ++i)
+    {
+        node.ptrs[i] = NULL;
+    }
+    //struct Node root;
+    node.keyPos = 0;
+    node.ptrPos = 0;
+    node.prevPtr = NULL;
+    node.nextPtr = NULL;
+    node.upperPtr = NULL;
+    node.isALeafNode = 0;
+};
+
+void initializeLeafNode(struct Node node){
+	int i;
+    for (i = 0; i < NODE_SIZE; ++i)
+    {
+        node.keys[i] = 0;
+    }
+    for (i = 0; i < NODE_SIZE; ++i)
+    {
+        node.values[i] = 0;
+    }
+    for (i = 0; i < PTR_ARR_SIZE; ++i)
+    {
+        node.ptrs[i] = NULL;
+    }
+    //struct Node root;
+    node.keyPos = 0;
+    node.ptrPos = 0;
+    node.prevPtr = NULL;
+    node.nextPtr = NULL;
+    node.upperPtr = NULL;
+    isALeafNode = 0;
+};
+
+
+/* FIND (Chapter10.4)
 This is an equality search for an entry whose key matches the target key exactly.
 How many nodes need to be accessed during an equality search for a key, within the B+Tree? 
 */
 
+
+
 // TODO: here you will need to define FIND/SEARCH related method(s) of finding key-values in your B+Tree.
 
+//This function inserts a key
+void insertIntoNode()
 
 /* INSERT (Chapter 10.5)
 How does inserting an entry into the tree differ from finding an entry in the tree?
 When you insert a key-value pair into the tree, what happens if there is no space in the leaf node? What is the overflow handling algorithm?
 For Splitting B+Tree Nodes (Chapter 10.8.3)
 */
+
+void insert(key, value){
+    
+}
 
 // TODO: here you will need to define INSERT related method(s) of adding key-values in your B+Tree.
 
